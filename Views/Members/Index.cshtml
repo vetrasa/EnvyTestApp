@@ -1,0 +1,62 @@
+﻿@model IEnumerable<EnvyTestApp.Models.Members>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Members</h2>
+<p>
+    @Html.ActionLink("Create New", "New")
+</p>
+@if (!Model.Any())
+{
+    <p>We don't have any Members yet.</p>
+}
+else
+{
+    <table id="customers" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Member</th>
+                <th>Rank</th>
+                <th>Previous Rank</th>
+                <th>Date Join</th>
+                <th>Date Last Rank Changed</th>
+                <th>Last Updated By</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var member in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(member.Name, "Edit", "Members", new { id = member.Id }, null)</td>
+                    <td>@member.Rank.RankName</td>
+                    <td>@member.PreviousRank.RankName</td>
+                    <td @{if (member.DateJoin.Value <= DateTime.Now.AddDays(-7) && (member.Rank.RankName.ToString() == "Trial Member")) {<text>style="color:red" </text> } }>@member.DateJoin</td>
+                    <td>@member.DateLastRankChange</td>
+                    <td>@member.LastChangedBy</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#customers").DataTable({
+                'columnDefs':[
+                    {
+                        'searchable': false,
+                        'targets': [2,3,4,5]
+                    },
+                ]});      
+
+           
+
+        });
+
+
+    </script>
+}

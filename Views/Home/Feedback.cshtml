@@ -1,0 +1,26 @@
+﻿@model EnvyTestApp.Models.Feedback
+@{
+    ViewBag.Title = "Feedback";
+}
+
+<h2>@ViewBag.Title</h2>
+<h3>@ViewBag.message</h3>
+
+@using (Html.BeginForm("SubmitFeedback", "Home"))
+{
+    @Html.ValidationSummary(true, "Please fix the following errors")
+    <div class="form-group">
+
+        @Html.TextAreaFor(m => m.Description, new { @class = "feedback-desc", @rows = "20", @cols = "500" })
+        <br />
+        @Html.ValidationMessageFor(m => m.Description)
+
+    </div>
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary"> Submit</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")   }
+
